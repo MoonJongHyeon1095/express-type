@@ -1,19 +1,20 @@
 import UserRepository from "../repositories/user.repository";
 import { InvalidAccessError } from "../utils/exceptions";
-import { JWT } from "../utils/jwt";
+import JWT from "../utils/jwt";
 import { Service, Inject, Container } from "typedi";
+import userRepositoryContainer from "../container/user.repository.container";
+import jwtContainer from "../container/jwt.container";
 
 @Service()
 export default class UserService {
-  @Inject()
+  // @Inject()
   private userRepository: UserRepository
+  // @Inject()
   private jwt: JWT
-  constructor(
-    userRepository: UserRepository,
-    jwt: JWT
-  ) {
-    this.userRepository = userRepository
-    this.jwt = jwt
+
+  constructor(){
+    this.userRepository = userRepositoryContainer.get('userRepository')
+    this.jwt = jwtContainer.get('jwt')
   }
   login = async (id: string, pw: string) => {
     const user = await this.userRepository.findUserById(id);

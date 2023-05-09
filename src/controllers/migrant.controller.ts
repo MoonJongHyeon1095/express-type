@@ -1,21 +1,22 @@
 import { Request, Response, NextFunction } from "express";
 import { InvalidParamsError } from "../utils/exceptions";
 import { Inject, Service } from "typedi";
-import PatientService from "../services/patients.service";
+import MigrantService from "../services/migrant.service";
+import migrantServiceContainer from "../container/migrant.service.container";
 
-export default class PatientController {
-  @Inject()
-  private patientService: PatientService;
-  constructor(patientService: PatientService) {
-    this.patientService = patientService;
+export default class MigrantController {
+
+  private migrantService: MigrantService;
+  constructor() {
+    this.migrantService = migrantServiceContainer.get('migrantService');
   }
 
-  createPatient = async (req: Request, res: Response, next: NextFunction) => {
+  createMigrant = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { addresses, images, ...patientData } = req.body;
-
-      const patientDto: PatientDTO = {
-        ...patientData,
+      const { addresses, ...migrantData } = req.body;
+      const {imageUrl, imageTxt} = req.body
+      const migrantDto: MigrantDTO = {
+        ...migrantData,
       };
 
       const addressDto: AddressDTO = {
@@ -23,12 +24,13 @@ export default class PatientController {
       };
 
       const imageDto: ImageDTO = {
-        ...images,
+        imageUrl,
+        imageTxt
       };
 
-      const imageData = await this.getImageData(req, next);
-      const data = await this.patientService.createPatient(
-        patientDto,
+      
+      const data = await this.migrantService.createMigrant(
+        migrantDto,
         addressDto,
         imageDto
       );
@@ -42,15 +44,14 @@ export default class PatientController {
     }
   };
 
-  getImageData = async (req: Express.Request, next: NextFunction) => {
+  async getImageData (req: Express.Request , next: NextFunction){
     try {
-      console.log(req.file);
-      const imageSize = req.file?.size
-      const imageTxt = req.file?.mimetype.split('/')
-      const image
-      const imageData = {
-        imageSize : req.file.size,
+      console.log('req.file:', req.file);
+      console.log('req.files:',req.files);
 
+
+      const imageData = {
+ 
     };
       if (!imageData) {
         throw new InvalidParamsError(
@@ -64,13 +65,13 @@ export default class PatientController {
     }
   };
 
-  findPatient = async (req: Request, res: Response, next: NextFunction) => {
+  findMigrant = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const patientId = Number(req.params.patientId);
-      if (!patientId)
+      const migrantId = Number(req.params.migrantId);
+      if (!migrantId)
         throw new InvalidParamsError("환자아이디를 입력해주세요", 400);
 
-      const data = await this.patientService.findPatient(patientId);
+      const data = await this.migrantService.findMigrant(migrantId);
       if (!data) throw new Error("환자 데이터가 없습니다.");
 
       res.status(200).json({

@@ -1,13 +1,19 @@
 import UserService from "../services/user.service";
 import { Request, Response, NextFunction } from "express";
 import { InvalidParamsError } from "../utils/exceptions";
-import { Inject, Service } from "typedi";
+import { Inject, Service, Container } from "typedi";
+import userServiceContainer from "../container/user.service.container";
 
+@Service()
 export default class UserController {
-  @Inject()
+  // @Inject()
   private userService: UserService;
-  constructor(userService: UserService) {
-    this.userService = userService;
+  
+  // constructor(userService: UserService) {
+  //   this.userService = userService;
+  // }
+  constructor(){
+    this.userService = userServiceContainer.get('userService')
   }
 
   login = async (req: Request, res: Response, next: NextFunction) => {

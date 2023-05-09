@@ -1,22 +1,30 @@
-import { JWT } from "../utils/jwt";
+import JWT from "../utils/jwt";
 import { Request, Response, NextFunction } from "express";
 import { InvalidAccessError } from "../utils/exceptions";
 import { Inject, Service } from "typedi";
 import UserRepository from "../repositories/user.repository";
 import dotenv from "dotenv";
+import jwtContainer from "../container/jwt.container";
+import userRepositoryContainer from "../container/user.repository.container";
 dotenv.config();
 
 @Service()
 export class AuthMiddleware {
+  // @Inject()
   private userRepository: UserRepository;
+  // @Inject()
   private jwt: JWT;
-  constructor(
-    @Inject()
-    userRepository: UserRepository,
-    @Inject() jwt: JWT
-  ) {
-    this.userRepository = userRepository;
-    this.jwt = jwt;
+  // constructor(
+  //   @Inject()
+  //   userRepository: UserRepository,
+  //   @Inject() jwt: JWT
+  // ) {
+  //   this.userRepository = userRepository;
+  //   this.jwt = jwt;
+  // }
+  constructor(){
+    this.jwt = jwtContainer.get('jwt')
+    this.userRepository = userRepositoryContainer.get('userRepository')
   }
   authenticateJWT = async (req: Request, res: Response, next: NextFunction) => {
     // const { authorization, refreshtoken } = req.headers;

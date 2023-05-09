@@ -1,27 +1,24 @@
 import { Entity, Column, PrimaryGeneratedColumn, Index, ManyToOne, JoinColumn } from 'typeorm';
-import { Patient } from "./patient.entity";
+import { Migrant } from "./migrant.entity";
 
-@Entity({ name: 'patient_image' })
-export class PatientImage {
+@Entity({ name: 'image' })
+export class Image {
   @PrimaryGeneratedColumn({ name: 'imageId' })
   imageId: number;
 
-  @ManyToOne(() => Patient, (patient: Patient) => patient.addresses, {
+  @ManyToOne(() => Migrant, (migrant: Migrant) => migrant.images, {
     eager: true,
     cascade: ["update"],
     onDelete: "CASCADE",
   })
   @JoinColumn({
-    name: "patientId",
-    referencedColumnName: "patientId",
+    name: "migrantId",
+    referencedColumnName: "migrantId",
   })
-  patientId: Promise<Patient>;
+  migrantId: Promise<Migrant>;
 
   @Column({ name: 'imageUrl', nullable: true })
   imageUrl: string;
-
-  @Column({ name: 'imageSize', nullable: true })
-  imageSize: number;
 
   @Column({ name: 'imageTxt', nullable: true })
   imageTxt: string;

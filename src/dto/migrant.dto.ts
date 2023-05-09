@@ -1,6 +1,6 @@
 // addressDTO
 interface AddressDTO { 
-    patientId?: number;
+    migrantId?: number;
     address1: string;
     address2: string;
     createdAt?: string;
@@ -8,21 +8,17 @@ interface AddressDTO {
   
   // imageDTO
   interface ImageDTO {
-    patientId?: number;
+    migrantId?: number;
     imageUrl: string;
-    imageSize: number;
     imageTxt: string;
     createdAt?: string;
   }
   
   // patientDTO
-  interface PatientDTO {
+  interface MigrantDTO {
     name: string;
     ssn: string;
     enssn?: string;
-    birthDate: string;
-    cellPhone: string;
     phone: string;
-    email: string;
     createdAt?: string;
   }

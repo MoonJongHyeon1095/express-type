@@ -6,23 +6,23 @@ import {
   ManyToOne,
   JoinColumn,
 } from "typeorm";
-import { Patient } from "./patient.entity";
+import { Migrant } from "./migrant.entity";
 
-@Entity({ name: "patient_address" })
-export class PatientAddress {
+@Entity({ name: "address" })
+export class Address {
   @PrimaryGeneratedColumn({ name: "addressId" })
   addressId: number;
 
-  @ManyToOne(() => Patient, (patient: Patient) => patient.addresses, {
+  @ManyToOne(() => Migrant, (migrant: Migrant) => migrant.addresses, {
     eager: true,
     cascade: ["update"],
     onDelete: "CASCADE",
   })
   @JoinColumn({
-    name: "patientId",
-    referencedColumnName: "patientId",
+    name: "migrantId",
+    referencedColumnName: "migrantId",
   })
-  patientId: Promise<Patient>;
+  migrantId: Promise<Migrant>;
 
   @Column({ name: "address1", nullable: true })
   address1: string;

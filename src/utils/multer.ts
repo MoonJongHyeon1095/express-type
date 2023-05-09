@@ -19,7 +19,8 @@ const storage = multer.diskStorage({
     file: Express.Multer.File,
     callback: FileNameCallback
   ) {
-    callback(null, file.originalname);
+    const now = new Date();
+    callback(null, `${getTime().toString()}` + file.originalname);
   },
 });
 const imageFilter = function (
@@ -42,3 +43,17 @@ cloudinary.v2.config({
   api_key: "854222453699843",
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
+
+/**
+   * @returns 생성일자
+   */
+ function getTime(){
+  const now = new Date();
+  const yyyy = now.getFullYear().toString();
+  const MM = (now.getMonth() + 1).toString().padStart(2, "0");
+  const dd = now.getDate().toString().padStart(2, "0");
+  const HH = now.getHours().toString().padStart(2, "0");
+  const mm = now.getMinutes().toString().padStart(2, "0");
+  const ss = now.getSeconds().toString().padStart(2, "0");
+  return `${yyyy}${MM}${dd}${HH}${mm}${ss}`;
+};

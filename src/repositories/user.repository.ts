@@ -10,7 +10,8 @@ export default class UserRepository {
    */
   findUserById = async (id: string) => {
     const query = `SELECT * FROM user WHERE nickname = ?`;
-    return await this.runQuery(query, id);
+    const user =  await this.runQuery(query, id);
+    return user
   };
   findUserByToken = async (token: string) => {
     const query = `SELECT * FROM user WHERE refreshtoken = ?`;

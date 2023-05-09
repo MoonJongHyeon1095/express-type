@@ -5,7 +5,7 @@ dotenv.config()
 const secretKey = process.env.JWT_KEY || 'default-secret-key';
 
 @Service()
-export class JWT {
+export default class JWT {
   access= (payload: {}) => {
     return jwt.sign(payload, secretKey, {
       algorithm: "HS256",

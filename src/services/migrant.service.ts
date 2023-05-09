@@ -1,34 +1,31 @@
 import { InvalidAccessError } from "../utils/exceptions";
-import { JWT } from "../utils/jwt";
+import JWT from "../utils/jwt";
 import { Service, Inject, Container } from "typedi";
-import PatientRepository from "../repositories/patients.repository";
+import MigrantRepository from "../repositories/migrant.repository";
 import * as bcrypt from "bcrypt";
+import migrantRepositoryContainer from "../container/migrant.repository.container";
 
 @Service()
-export default class PatientService {
-  @Inject()
-  private patientRepository: PatientRepository;
-  constructor(patientRepository: PatientRepository) {
-    this.patientRepository = patientRepository;
+export default class MigrantService {
+  private migrantRepository: MigrantRepository;
+  constructor() {
+    this.migrantRepository = migrantRepositoryContainer.get('migrantRepository');
   }
 
-  createPatient = async (
-    patientDto: PatientDTO,
+  createMigrant = async (
+    migrantDto: MigrantDTO,
     addressDto: AddressDTO,
     imageDto: ImageDTO
   ) => {
     const createdAt = this.getTime();
     const salt = await bcrypt.genSalt();
-    const enssn = await bcrypt.hash(patientDto.ssn, salt);
+    const enssn = await bcrypt.hash(migrantDto.ssn, salt);
 
-    const patientData = {
-      name: patientDto.name.toString(),
-      ssn: patientDto.ssn.toString().slice(0, 7),
+    const migrantData = {
+      name: migrantDto.name.toString(),
+      ssn: migrantDto.ssn.toString().slice(0, 7),
       enssn: enssn,
-      birthDate: patientDto.birthDate.toString(),
-      cellPhone: patientDto.cellPhone.toString(),
-      phone: patientDto.phone.toString(),
-      email: patientDto.email.toString(),
+      phone: migrantDto.phone.toString(),
       createdAt: createdAt,
     };
 
@@ -40,17 +37,16 @@ export default class PatientService {
 
     const imageData = {
       imageUrl: imageDto.imageUrl.toString(),
-      imageSize: Number(imageDto.imageSize),
       imageTxt: imageDto.imageTxt.toString(),
       createdAt: createdAt,
     };
 
-    const patient = await this.patientRepository.createPatient(patientData);
-    const patientId = patient.patientid;
+    const migrant = await this.migrantRepository.createMigrant(migrantData);
+    const migrantId = migrant.migrantId;
 
     const results = await Promise.allSettled([
-      this.patientRepository.createAddress(patientId, addressData),
-      this.patientRepository.createImage(patientId, imageData),
+      this.migrantRepository.createAddress(migrantId, addressData),
+      this.migrantRepository.createImage(migrantId, imageData),
     ]);
 
     const successful = results
@@ -65,8 +61,8 @@ export default class PatientService {
     console.log("Failed: ", failed);
   };
 
-  findPatient = async(patientId: number) => {
-    return await this.patientRepository.findPatient(patientId)
+  findMigrant = async(migrantId: number) => {
+    return await this.migrantRepository.findMigrant(migrantId)
   }
 
   /**

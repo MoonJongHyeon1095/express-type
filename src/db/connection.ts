@@ -4,14 +4,14 @@ dotenv.config()
 
 let connectionOptions;
 
-const pool = mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-    connectTimeout: 5000,
-    connectionLimit: 10,
-  });
+// const pool = mysql.createPool({
+//     host: process.env.DB_HOST,
+//     user: process.env.DB_USER,
+//     database: process.env.DB_NAME,
+//     password: process.env.DB_PASSWORD,
+//     connectTimeout: 5000,
+//     connectionLimit: 10,
+//   });
 
 switch(process.env.NODE_ENV){
   case 'production' : 
@@ -46,5 +46,7 @@ switch(process.env.NODE_ENV){
     connectionLimit: 10,
   }
 }
+
+const pool = mysql.createPool(connectionOptions)
 
 export default pool

@@ -40,7 +40,6 @@ export default class UserRepository {
       await connection.beginTransaction();
       const resultPacket = await connection.query(query, param);
       const result = JSON.parse(JSON.stringify(resultPacket))[0][0];
-
       await connection.commit();
       connection.release();
       return result;

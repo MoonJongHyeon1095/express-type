@@ -1,6 +1,6 @@
 export const loginInput = {
-    id: 'admin',
-    pw: 'admin',
+    id: 'test',
+    pw: 'test',
   }
 
 export const loginOutput =  {
@@ -13,7 +13,7 @@ export const loginOutput =  {
 
 export const findUserByIdResult = {
   userId: 1,
-  nickname: 'admin',
-  password: 'admin',
+  nickname: 'test',
+  password: 'test',
   refreshtoken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2ODMzNDU3MjUsImV4cCI6MTY4MzQzMjEyNX0.DfWO_VcAHEJcFszT7fGJAh1HnC0C9x8FcYemq8lud_4'
   }

@@ -6,12 +6,7 @@ import userServiceContainer from "../container/user.service.container";
 
 @Service()
 export default class UserController {
-  // @Inject()
   private userService: UserService;
-  
-  // constructor(userService: UserService) {
-  //   this.userService = userService;
-  // }
   constructor(){
     this.userService = userServiceContainer.get('userService')
   }

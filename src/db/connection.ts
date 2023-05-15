@@ -16,10 +16,10 @@ let connectionOptions;
 switch(process.env.NODE_ENV){
   case 'production' : 
     connectionOptions = {
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
+      host: process.env.PROD_HOST,
+      user: process.env.PROD_USER,
       database: process.env.DB_NAME,
-      password: process.env.DB_PASSWORD,
+      password: process.env.PROD_PASSWORD,
       connectTimeout: 5000,
       connectionLimit: 10,
     }

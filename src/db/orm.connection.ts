@@ -1,18 +1,9 @@
 import { DataSource, DataSourceOptions } from "typeorm"
 ​import dotenv from 'dotenv';
 dotenv.config()
-
-// export const dataSource = new DataSource({
-//     type: "mysql",
-//     host: process.env.DB_HOST,
-//     port: 3306,
-//     username: process.env.DB_USER,
-//     password: process.env.DB_PASSWORD,
-//     database: process.env.DB_NAME,
-//     entities: ["src/entity/*.js"],
-//     logging: true,
-//     synchronize: false,
-// })
+import { Migrant } from "../entity/migrant.entity";
+import { Address } from "../entity/address.entity";
+import { Image } from "../entity/image.entity";
 
 let dataSourceOptions;
 
@@ -20,12 +11,13 @@ switch(process.env.NODE_ENV) {
   case 'production':
     dataSourceOptions = {
       type: "mysql",
-      host: process.env.DB_HOST?.toString(),
+      host: process.env.PROD_HOST?.toString(),
       port: 3306,
-      username: process.env.DB_USER?.toString(),
-      password: process.env.DB_PASSWORD?.toString(),
+      username: process.env.PROD_USER?.toString(),
+      password: process.env.PROD_PASSWORD?.toString(),
       database: process.env.DB_NAME?.toString(),
-      entities: ["src/entity/*.js"],
+      entities: [Migrant, Address, Image],
+      // entities: [Migrant, Address, Image],
       logging: false, // set to false in production
       synchronize: false,
     };
@@ -38,7 +30,8 @@ switch(process.env.NODE_ENV) {
       username: process.env.DB_USER?.toString(),
       password: process.env.DB_PASSWORD?.toString(),
       database: process.env.DB_NAME?.toString(),
-      entities: ["src/entity/*.js"],
+      entities: [Migrant, Address, Image],
+      // entities: ["src/entity/*.ts"],
       logging: false,
       synchronize: true, // set to true in test
     };
@@ -51,7 +44,8 @@ switch(process.env.NODE_ENV) {
       username: process.env.DB_USER?.toString(),
       password: process.env.DB_PASSWORD?.toString(),
       database: process.env.DB_NAME?.toString(),
-      entities: ["src/entity/*.js"],
+      entities: [Migrant, Address, Image],
+      // entities: ["src/entity/*.ts"],
       logging: true, 
       synchronize: true, 
     };

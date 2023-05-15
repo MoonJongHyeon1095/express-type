@@ -3,6 +3,7 @@ import "reflect-metadata";
 import cookieParser from "cookie-parser";
 import routes from "./routes";
 import dotenv from "dotenv";
+import swaggerUi from "swagger-ui-express";
 import { dataSource } from "./db/orm.connection";
 dotenv.config();
 
@@ -16,7 +17,7 @@ const port = process.env.PORT;
 dataSource
     .initialize()
     .then(() => {
-        console.log("Data Source has been initialized!")
+        console.log(`${process.env.NODE_ENV} Data Source has been initialized!`)
     })
     .catch((err) => {
         console.error("Error during Data Source initialization:", err)
@@ -25,12 +26,19 @@ dataSource
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.set("view engine", "ejs");
+app.use(express.static("public"));
+
+app.use(
+  "/docs",
+  swaggerUi.serve,
+  swaggerUi.setup(undefined, {
+    swaggerOptions: {
+      url: "/swagger.json",
+    },
+  })
+);
 
 app.use("/", routes);
-app.get("/", (req: Request, res: Response) => {
-  res.send("Express + TypeScript Server");
-});
 
 app.listen(port, () => {
   console.log(`${port}만큼 사랑해`);

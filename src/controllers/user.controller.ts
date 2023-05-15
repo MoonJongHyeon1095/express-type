@@ -3,14 +3,17 @@ import { Request, Response, NextFunction } from "express";
 import { InvalidParamsError } from "../utils/exceptions";
 import { Inject, Service, Container } from "typedi";
 import userServiceContainer from "../container/user.service.container";
+import { Post, Route, Tags } from "tsoa";
 
 @Service()
-export default class UserController {
+@Route("user")
+@Tags('User')
+export default class UserController  {
   private userService: UserService;
   constructor(){
     this.userService = userServiceContainer.get('userService')
   }
-
+  @Post("/login")
   login = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id, pw } = req.body;
@@ -29,7 +32,7 @@ export default class UserController {
       res.status(error.status || 400).json({ message: error.message });
     }
   };
-
+  @Post("/logout")
   logout = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userId = Number(res.locals.user.userId)

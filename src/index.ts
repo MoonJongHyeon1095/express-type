@@ -3,8 +3,8 @@ import "reflect-metadata";
 import cookieParser from "cookie-parser";
 import routes from "./routes";
 import dotenv from "dotenv";
-import swaggerUi from "swagger-ui-express";
 import { dataSource } from "./db/orm.connection";
+import { serveSwaggerDocs } from "./utils/swagger";
 dotenv.config();
 
 process.env.NODE_ENV = ( process.env.NODE_ENV && ( process.env.NODE_ENV ).trim().toLowerCase() == 'production' ) ? 'production' 
@@ -28,15 +28,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static("public"));
 
-app.use(
-  "/docs",
-  swaggerUi.serve,
-  swaggerUi.setup(undefined, {
-    swaggerOptions: {
-      url: "/swagger.json",
-    },
-  })
-);
+// Serve Swagger documentation
+app.use("/docs", ...serveSwaggerDocs());
 
 app.use("/", routes);
 

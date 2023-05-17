@@ -37,12 +37,12 @@ const imageFilter = function (
 
 export const upload = multer({ storage: storage, fileFilter: imageFilter });
 
-import * as cloudinary from "cloudinary";
-cloudinary.v2.config({
-  cloud_name: "doi9y5hig",
-  api_key: "854222453699843",
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+// import * as cloudinary from "cloudinary";
+// cloudinary.v2.config({
+//   cloud_name: "doi9y5hig",
+//   api_key: "854222453699843",
+//   api_secret: process.env.CLOUDINARY_API_SECRET,
+// });
 
 /**
    * @returns 생성일자
